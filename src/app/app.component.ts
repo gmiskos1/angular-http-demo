@@ -39,6 +39,13 @@ export class AppComponent implements OnInit, OnDestroy {
     // Send Http request
     console.log(postData);
     this.postsService.createAndStorePost(postData.title, postData.content);   
+    this.postsService.fetch.subscribe(
+      (ff:boolean)=>{
+        if(ff){
+          this.onFetchPosts();
+        }
+      }
+    )
   }
 
   onFetchPosts() {

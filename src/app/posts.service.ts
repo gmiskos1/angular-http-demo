@@ -2,12 +2,14 @@ import { HttpClient, HttpEventType, HttpHeaders, HttpParams } from "@angular/com
 import { Injectable } from "@angular/core";
 import { Post } from "./post.model";
 import { catchError, map, tap } from 'rxjs/operators';
-import { Subject, throwError } from "rxjs";
+import { BehaviorSubject, Subject, throwError } from "rxjs";
 
 
 @Injectable({providedIn:'root'})
 export class PostsService{
       error = new Subject<string>();
+      postsChanged = new Subject<Post[]>();
+      fetch = new BehaviorSubject<boolean>(false);
 
       constructor(private http:HttpClient){}
 
@@ -22,6 +24,7 @@ export class PostsService{
                   }
                 ).subscribe(responseData => {
                   console.log(responseData.body);
+                  this.fetch.next(true);
                 }, error =>{
                     this.error.next(error.message);  
                 });
